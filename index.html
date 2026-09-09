@@ -640,10 +640,14 @@ if(вшито && вшито.charAt(0)==='{'){
   var подпись=(ТГ && ТГ.initData) ? ТГ.initData : '';
   черезСкрипт(АПИ+'?data=1&init='+encodeURIComponent(подпись),
     function(о){
-      if(о && о.ok){ Д=о.данные; отрисовать(); return; }
+      if(о && о.ok){
+        try{ Д=о.данные; отрисовать(); }
+        catch(e){ ошибка(экр('при отрисовке: '+e.message+'<br><br>'+String(e.stack||'').split('\n').slice(0,3).join('<br>'))); }
+        return;
+      }
       var т=String((о && о.ошибка) || 'нет ответа').replace(/^Error:?\s*/,'');
       if(т.indexOf('ПМ 2.67к')>=0){ var м=т.match(/\[(.+)\]/); отказДоступа(м?м[1]:''); }
-      else ошибка(экр(т));
+      else ошибка(экр(т)+(о&&о.где?'<br><br><span style="font-size:11px">'+экр(о.где)+'</span>':''));
     },
     function(e){ ошибка(экр(e.message)); });
 }else if(window.google && google.script && google.script.run){
