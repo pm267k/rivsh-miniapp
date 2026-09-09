@@ -39,7 +39,10 @@ button.карта{cursor:pointer}
 .карта.акцент{border-color:var(--lime-deep);background:var(--lime-soft)}
 .карта.тихо{opacity:.55}
 
-.пара{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start}
+.пара{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:start}
+.вид{margin-top:5px}
+.ведёт{color:var(--muted);font-size:18px;line-height:1;align-self:center}
+.кликабельна{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .время{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);
   font-variant-numeric:tabular-nums;line-height:1.35}
 .дис{font-weight:600;font-size:14.5px;line-height:1.3}
