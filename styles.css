@@ -34,8 +34,7 @@ button,a{-webkit-touch-callout:none}
 /* --- карточки --- */
 .карта{background:var(--surface);border:1px solid var(--line);border-radius:14px;
   padding:12px 13px;margin-bottom:8px;display:block;width:100%;text-align:left;color:inherit;
-  -webkit-tap-highlight-color:transparent;transition:background .18s ease,transform .12s ease}
-button.карта:active{background:var(--surface-2);transform:scale(.995)}
+  -webkit-tap-highlight-color:transparent}
 button.карта{cursor:pointer}
 .карта.акцент{border-color:var(--lime-deep);background:var(--lime-soft)}
 .карта.тихо{opacity:.55}
@@ -71,15 +70,8 @@ button.карта{cursor:pointer}
 .кнопка{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface-2);
   color:var(--ink);border-radius:9px;padding:6px 11px;font-size:12.5px;cursor:pointer;text-decoration:none}
 .кнопка.главная{background:var(--lime);border-color:var(--lime-deep);color:#131A20;font-weight:600}
-/* Раскрытие описания: анимируем max-height, а не line-clamp — тот переключается
-   рывком и подмигивает на первом кадре (09.09). */
-.коммент{overflow:hidden;max-height:1.5em;
-  transition:max-height .3s cubic-bezier(.22,.61,.36,1);will-change:max-height}
-.коммент.раскрыт{max-height:14em}
-@media (prefers-reduced-motion:reduce){.коммент{transition:none}}
-.можно-раскрыть .коммент{position:relative;padding-right:16px}
-.можно-раскрыть .коммент::after{content:"…";position:absolute;right:0;bottom:0;color:var(--muted)}
-.можно-раскрыть.раскрыта .коммент::after{content:""}
+
+
 .ещё{width:100%;border:1px dashed var(--line);background:none;color:var(--ink-2);border-radius:12px;
   padding:11px;font-size:13px;cursor:pointer;margin-top:2px}
 
