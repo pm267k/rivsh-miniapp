@@ -8,7 +8,8 @@ body{margin:0;background:var(--ground);color:var(--ink);
 .назв,.что,.дис,.имя,.авт,.мелко,h2{overflow-wrap:anywhere}
 h2{font-family:Unbounded,"Golos Text",sans-serif;font-weight:600;margin:0;text-wrap:balance}
 a{color:var(--link);text-decoration:none}
-button{font-family:inherit}
+button{font-family:inherit;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none}
+button,a{-webkit-touch-callout:none}
 :focus-visible{outline:2px solid var(--lime-deep);outline-offset:2px;border-radius:8px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
@@ -32,7 +33,9 @@ button{font-family:inherit}
 
 /* --- карточки --- */
 .карта{background:var(--surface);border:1px solid var(--line);border-radius:14px;
-  padding:12px 13px;margin-bottom:8px;display:block;width:100%;text-align:left;color:inherit}
+  padding:12px 13px;margin-bottom:8px;display:block;width:100%;text-align:left;color:inherit;
+  -webkit-tap-highlight-color:transparent;transition:background .18s ease,transform .12s ease}
+button.карта:active{background:var(--surface-2);transform:scale(.995)}
 button.карта{cursor:pointer}
 .карта.акцент{border-color:var(--lime-deep);background:var(--lime-soft)}
 .карта.тихо{opacity:.55}
@@ -71,7 +74,7 @@ button.карта{cursor:pointer}
 /* Раскрытие описания: анимируем max-height, а не line-clamp — тот переключается
    рывком и подмигивает на первом кадре (09.09). */
 .коммент{overflow:hidden;max-height:1.5em;
-  transition:max-height .22s ease, opacity .22s ease;will-change:max-height}
+  transition:max-height .3s cubic-bezier(.22,.61,.36,1);will-change:max-height}
 .коммент.раскрыт{max-height:14em}
 @media (prefers-reduced-motion:reduce){.коммент{transition:none}}
 .можно-раскрыть .коммент{position:relative;padding-right:16px}
