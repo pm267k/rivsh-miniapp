@@ -609,7 +609,7 @@ function ошибка(текст, заголовок){
   эк.appendChild(эл('div','пусто',текст));
 }
 /** Экран для тех, кто не в группе. Человек должен понять, куда он попал и что делать. */
-function отказДоступа(подробности){
+function отказДоступа(){
   ошибка(
     '<div style="text-align:left;max-width:34ch;margin:0 auto">' +
     '<p style="margin:0 0 12px">Это внутреннее приложение учебной группы <b>ПМ 2.67к</b> — ' +
@@ -617,8 +617,7 @@ function отказДоступа(подробности){
     '<p style="margin:0 0 12px">Здесь расписание, задания и материалы группы, поэтому оно открыто только её участникам.</p>' +
     '<p style="margin:0;color:var(--muted)">Если ты из группы, а приложение не пускает — напиши ' +
     '<a href="https://t.me/constantinserdiuk">@constantinserdiuk</a>.</p>' +
-    (подробности ? '<p style="margin:14px 0 0;font-size:11px;font-family:\'IBM Plex Mono\',monospace;color:var(--muted)">' + экр(подробности) + '</p>' : '') +
-    '</div>', 'Это приложение для группы');
+    '</div>', 'Доступ закрыт');
 }
 /* Адрес API. Пустой — значит страницу отдаёт сам Apps Script (запасной путь). */
 var АПИ='https://script.google.com/macros/s/AKfycbzDZD5a7kY_FKwNLizfpSIut3iwxCp2VTIxZIKr-8aQxdPdelMkoVoooCOywIYJ3CtRaQ/exec';
@@ -648,7 +647,7 @@ if(вшито && вшито.charAt(0)==='{'){
         return;
       }
       var т=String((о && о.ошибка) || 'нет ответа').replace(/^Error:?\s*/,'');
-      if(т.indexOf('ПМ 2.67к')>=0){ var м=т.match(/\[(.+)\]/); отказДоступа(м?м[1]:''); }
+      if(т.indexOf('ПМ 2.67к')>=0){ var м=т.match(/\[(.+)\]/); отказДоступа(); }
       else ошибка(экр(т)+(о&&о.где?'<br><br><span style="font-size:11px">'+экр(о.где)+'</span>':''));
     },
     function(e){ ошибка(экр(e.message)); });
@@ -662,14 +661,14 @@ if(вшито && вшито.charAt(0)==='{'){
       var т=(e && e.message ? e.message : String(e)).replace(/^Error:?\s*/,'');
       if(т.indexOf('ПМ 2.67к')>=0){
         var м=т.match(/\[(.+)\]/);            // подробность из режима отладки, если он включён
-        отказДоступа(м?м[1]:'');
+        отказДоступа();
       }else{
         ошибка(экр(т));
       }
     })
     .данныеГруппы(подпись);
 }else{
-  отказДоступа('страница открыта вне Telegram');
+  отказДоступа();
 }
 </script>
 </body>
