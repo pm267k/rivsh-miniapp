@@ -239,6 +239,26 @@ function чистыйКоммент(текст){
   return т ? т.charAt(0).toUpperCase()+т.slice(1) : '';
 }
 
+function экранДел(){
+  эк.appendChild(эл('div','шапка','<h2>Задания</h2><span>'+Д.задания.length+'</span>'));
+  var все=Д.задания.map(подготовитьДело).sort(function(a,b){return a.n-b.n;});
+  var группы=[
+    ['Ближайшие', все.filter(function(з){return з.n>=0&&з.n<=14;})],
+    ['Дальше',    все.filter(function(з){return з.n>14&&з.n<9999;})],
+    ['К сессии',  все.filter(function(з){return з.n>=9999;})],
+    ['Прошло',    все.filter(function(з){return з.n<0;})]
+  ];
+  группы.forEach(function(г){
+    if(!г[1].length) return;
+    эк.appendChild(эл('div','секц',г[0]+' · '+г[1].length));
+    г[1].forEach(function(з){
+      var c=картаДела(з);
+      if(г[0]==='Прошло') c.className+=' тихо';
+      эк.appendChild(c);
+    });
+  });
+}
+
 /* ---------- Книги ---------- */
 var запрос='', фВажные=false, фПредмет='', фКто='';
 function экранКниг(){
