@@ -623,7 +623,7 @@ var АПИ='https://script.google.com/macros/s/AKfycbzDZD5a7kY_FKwNLizfpSIut3iwx
 
 /** JSONP: Apps Script не отдаёт CORS-заголовки, поэтому грузим как скрипт. */
 function черезСкрипт(url, готово, беда){
-  var имя='ответ'+Date.now();
+  var имя='cb'+Date.now();   // ⚠️ только латиница: кириллицу в параметрах Google отбивает 400-м
   var т=setTimeout(function(){ прибрать(); беда(new Error('Apps Script не ответил')); }, 25000);
   function прибрать(){ clearTimeout(т); delete window[имя]; if(s.parentNode) s.parentNode.removeChild(s); }
   window[имя]=function(о){ прибрать(); готово(о); };
