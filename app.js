@@ -456,16 +456,19 @@ function отказДоступа(){
 /* Адрес API. Пустой — значит страницу отдаёт сам Apps Script (запасной путь). */
 var АПИ='https://script.google.com/macros/s/AKfycbzDZD5a7kY_FKwNLizfpSIut3iwxCp2VTIxZIKr-8aQxdPdelMkoVoooCOywIYJ3CtRaQ/exec';
 
-/** JSONP: Apps Script не отдаёт CORS-заголовки, поэтому грузим как скрипт. */
-function черезСкрипт(url, готово, беда){
-  var имя='cb'+Date.now();   // ⚠️ только латиница: кириллицу в параметрах Google отбивает 400-м
-  var т=setTimeout(function(){ прибрать(); беда(new Error('Таблица долго не отвечает')); }, 45000);
-  function прибрать(){ clearTimeout(т); delete window[имя]; if(s.parentNode) s.parentNode.removeChild(s); }
-  window[имя]=function(о){ прибрать(); готово(о); };
-  var s=document.createElement('script');
-  s.src=url+'&cb='+имя;
-  s.onerror=function(){ прибрать(); беда(new Error('не удалось связаться с таблицей')); };
-  document.body.appendChild(s);
+/** Прямой запрос: Apps Script отдаёт CORS `*`, поэтому fetch проходит.
+    Раньше здесь был JSONP — сторонний <script> внутри мини-аппа Telegram
+    не загружался и приложение висело на «Собираю расписание» (09.09). */
+function спроситьТаблицу(url, готово, беда){
+  var оборвать = new AbortController();
+  var т = setTimeout(function(){ оборвать.abort(); }, 45000);
+  fetch(url, {signal: оборвать.signal, cache: 'no-store'})
+    .then(function(о){ if(!о.ok) throw new Error('сервер ответил ' + о.status); return о.json(); })
+    .then(function(д){ clearTimeout(т); готово(д); })
+    .catch(function(e){
+      clearTimeout(т);
+      беда(new Error(e.name === 'AbortError' ? 'Таблица долго не отвечает' : (e.message || 'нет связи')));
+    });
 }
 
 var вшито=document.getElementById('данные').textContent.trim();
@@ -473,7 +476,7 @@ if(вшито && вшито.charAt(0)==='{'){
   Д=JSON.parse(вшито); отрисовать();
 }else if(АПИ.indexOf('http')===0){
   var подпись=(ТГ && ТГ.initData) ? ТГ.initData : '';
-  черезСкрипт(АПИ+'?data=1&init='+encodeURIComponent(подпись),
+  спроситьТаблицу(АПИ+'?data=1&init='+encodeURIComponent(подпись),
     function(о){
       if(о && о.ok){
         try{ Д=о.данные; отрисовать(); }
