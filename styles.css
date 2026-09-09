@@ -1,32 +1,4 @@
-/* Палитра — токены KIT v3 (projects/ai/kit/brand/kit-tokens.css): салатовый #DFFB76
-   на навьем #131A20. Берём цвет и ритм, но не знак и не кита-персонажа: это
-   приложение учебной группы, а не витрина бренда. Акцент таблицы (#E3F9A6) оказался
-   тем же салатовым — визуальная семья сошлась сама.
-   🔴 Правило брендбука: на салатовом текст только навий, белый НИКОГДА. */
-:root{
-  --ground:#F3F3F1; --surface:#fff; --surface-2:#FAFAF8;
-  --ink:#131A20; --ink-2:#1F2A33; --muted:#8E93A0;
-  --line:#E4E6E0; --line-soft:#EFF0EC;
-  --lime:#DFFB76; --lime-deep:#C7EB45; --lime-soft:#EFFBC9;
-  --link:#1155CC; --amber:#9A6B12; --amber-soft:#FFF4D6; --amber-line:#E8C88A;
-  --red:#E5484D; --red-soft:#FDECEC;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --ground:#0F1418; --surface:#171F26; --surface-2:#1F2A33;
-  --ink:#F3F3F1; --ink-2:#D6DAD2; --muted:#8E93A0;
-  --line:#28323A; --line-soft:#212A31;
-  --lime:#DFFB76; --lime-deep:#C7EB45; --lime-soft:#232E1A;
-  --link:#8FB8FF; --amber:#E3B457; --amber-soft:#2A2415; --amber-line:#5C4A22;
-  --red:#F08A8E; --red-soft:#2E1A1B;
-}}
-:root[data-theme="dark"]{
-  --ground:#0F1418; --surface:#171F26; --surface-2:#1F2A33;
-  --ink:#F3F3F1; --ink-2:#D6DAD2; --muted:#8E93A0;
-  --line:#28323A; --line-soft:#212A31;
-  --lime:#DFFB76; --lime-deep:#C7EB45; --lime-soft:#232E1A;
-  --link:#8FB8FF; --amber:#E3B457; --amber-soft:#2A2415; --amber-line:#5C4A22;
-  --red:#F08A8E; --red-soft:#2E1A1B;
-}
+/* Палитра и типографика — в токены.css, подключается первым. */
 *{box-sizing:border-box;min-width:0}                 /* min-width:0 — иначе длинные строки распирают grid-ячейки */
 html,body{height:100%;max-width:100%;overflow-x:hidden}
 body{margin:0;background:var(--ground);color:var(--ink);
