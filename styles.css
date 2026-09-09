@@ -55,7 +55,8 @@ button.карта{cursor:pointer}
 
 /* задание */
 .дело{display:grid;gap:7px}
-.дело .верх{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.дело .верх{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.дело .предмет{flex:1;min-width:0}
 .дело .предмет{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .дело .что{font-size:14.5px;line-height:1.35;font-weight:500}
 .срок{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:3px 8px;border-radius:8px;
