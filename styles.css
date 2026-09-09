@@ -70,6 +70,9 @@ button.карта{cursor:pointer}
 .кнопка.главная{background:var(--lime);border-color:var(--lime-deep);color:#131A20;font-weight:600}
 .коммент{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .коммент.раскрыт{-webkit-line-clamp:unset;overflow:visible}
+.можно-раскрыть .коммент{position:relative;padding-right:16px}
+.можно-раскрыть .коммент::after{content:"…";position:absolute;right:0;bottom:0;color:var(--muted)}
+.можно-раскрыть.раскрыта .коммент::after{content:""}
 .ещё{width:100%;border:1px dashed var(--line);background:none;color:var(--ink-2);border-radius:12px;
   padding:11px;font-size:13px;cursor:pointer;margin-top:2px}
 

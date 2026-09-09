@@ -18,6 +18,21 @@ var МЕС_РОД=['января','февраля','марта','апреля','
 var ДНИ=['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
 var ДНИ_КОР=['вс','пн','вт','ср','чт','пт','сб'];
 var сегодня=new Date(); сегодня.setHours(0,0,0,0);
+/* Сессии по графику института (rivsh-schedule): «в сессию» человеку ничего не говорит —
+   он и сейчас на сессии. Называем номер: «2-я сессия». */
+var СЕССИИ=[
+  {н:1, с:new Date(2026,7,24),  по:new Date(2026,8,19)},
+  {н:2, с:new Date(2027,0,25),  по:new Date(2027,1,20)},
+  {н:3, с:new Date(2027,7,23),  по:new Date(2027,8,18)},
+  {н:4, с:new Date(2028,0,24),  по:new Date(2028,2,17)}
+];
+function сессияДля(д){
+  if(!д) return null;
+  for(var i=0;i<СЕССИИ.length;i++) if(д>=СЕССИИ[i].с && д<=СЕССИИ[i].по) return СЕССИИ[i].н;
+  // срок стоит до начала сессии — относим к ближайшей следующей
+  for(var j=0;j<СЕССИИ.length;j++) if(д<СЕССИИ[j].с) return СЕССИИ[j].н;
+  return null;
+}
 
 /** «04.09.2026» · «03.09» · «⏰ 17 сентября» · «январь–февраль 2027» → {дата, точная} */
 function разобратьСрок(текст){
@@ -45,7 +60,11 @@ function d0(д){ return д? Math.round((д-сегодня)/864e5) : 99999; }
 function подписьСрока(с){
   if(!с.дата) return с.текст || 'без срока';
   var n=d0(с.дата);
-  if(!с.точная) return n<0? 'прошло' : (n>60? 'в сессию' : 'в этом месяце');
+  if(!с.точная){
+    if(n<0) return 'прошло';
+    var ном=сессияДля(с.дата);
+    return ном ? ном+'-я сессия' : 'в этом месяце';
+  }
   if(n<0) return 'просрочено';
   if(n===0) return 'сегодня';
   if(n===1) return 'завтра';
@@ -161,7 +180,7 @@ function экранСегодня(){
     эк.appendChild(эл('div','секц','Ближайшие задания'));
     дела.slice(0,3).forEach(function(з){эк.appendChild(картаДела(з));});
     if(дела.length>3){
-      var к=эл('button','ещё','Ещё '+(дела.length-3)+' — открыть задания →');
+      var к=эл('button','ещё','Все задания');
       к.onclick=function(){вибро(); перейти('дела');};
       эк.appendChild(к);
     }
@@ -224,12 +243,15 @@ function картаДела(з){
   // тап по карточке разворачивает описание; ссылку открывает только кнопка
   var кн=c.querySelector('[data-сс]');
   if(кн) кн.onclick=function(e){ e.stopPropagation(); вибро(); открыть(кн.getAttribute('data-сс')); };
-  c.onclick=function(){
+  // если описание помещается в строку — не прячем и не делаем карточку кликабельной:
+  // тап, который добавляет одно слово, только раздражает
+  setTimeout(function(){
     var к=c.querySelector('.коммент');
     if(!к) return;
-    вибро();
-    к.classList.toggle('раскрыт');
-  };
+    if(к.scrollHeight<=к.clientHeight+1){ к.classList.add('раскрыт'); return; }
+    c.classList.add('можно-раскрыть');
+    c.onclick=function(){ вибро(); к.classList.toggle('раскрыт'); c.classList.toggle('раскрыта'); };
+  },0);
   return c;
 }
 /** «задано 27.08 · нужны двое…» → «Нужны двое…»: дата постановки в списке не нужна,
@@ -245,7 +267,7 @@ function экранДел(){
   var группы=[
     ['Ближайшие', все.filter(function(з){return з.n>=0&&з.n<=14;})],
     ['Дальше',    все.filter(function(з){return з.n>14&&з.n<9999;})],
-    ['К сессии',  все.filter(function(з){return з.n>=9999;})],
+    ['Ко 2-й сессии', все.filter(function(з){return з.n>=9999;})],
     ['Прошло',    все.filter(function(з){return з.n<0;})]
   ];
   группы.forEach(function(г){
@@ -534,40 +556,6 @@ if(вшито && вшито.charAt(0)==='{'){
       if(т.indexOf('ПМ 2.67к')>=0) отказДоступа(); else ошибка(экр(т));
     })
     .данныеГруппы(п2);
-}else{
-  отказДоступа();
-}else if(АПИ.indexOf('http')===0){
-  var подпись=(ТГ && ТГ.initData) ? ТГ.initData : '';
-  спроситьТаблицу(АПИ+'?data=1&init='+encodeURIComponent(подпись),
-    function(о){
-      if(о && о.ok){
-        try{ Д=о.данные; отрисовать(); }
-        catch(e){ ошибка(экр('при отрисовке: '+e.message+'<br><br>'+String(e.stack||'').split('\n').slice(0,3).join('<br>'))); }
-        return;
-      }
-      var т=String((о && о.ошибка) || 'нет ответа').replace(/^Error:?\s*/,'');
-      if(т.indexOf('ПМ 2.67к')>=0){ var м=т.match(/\[(.+)\]/); отказДоступа(); }
-      else ошибка(экр(т)+(о&&о.где?'<br><br><span style="font-size:11px">'+экр(о.где)+'</span>':''));
-    },
-    function(e){
-      ошибка(экр(e.message)+'<br><br><button class="кнопка главная" onclick="location.reload()">Попробовать ещё раз</button>');
-    });
-}else if(window.google && google.script && google.script.run){
-  // initData — подписанные Telegram данные о том, кто открыл. Скрипт проверит подпись
-  // и членство в чате; без них данных не отдаст.
-  var подпись=(ТГ && ТГ.initData) ? ТГ.initData : '';
-  google.script.run
-    .withSuccessHandler(function(д){ Д=(typeof д==='string'?JSON.parse(д):д); отрисовать(); })
-    .withFailureHandler(function(e){
-      var т=(e && e.message ? e.message : String(e)).replace(/^Error:?\s*/,'');
-      if(т.indexOf('ПМ 2.67к')>=0){
-        var м=т.match(/\[(.+)\]/);            // подробность из режима отладки, если он включён
-        отказДоступа();
-      }else{
-        ошибка(экр(т));
-      }
-    })
-    .данныеГруппы(подпись);
 }else{
   отказДоступа();
 }
