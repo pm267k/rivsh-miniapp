@@ -158,7 +158,7 @@ function экранСегодня(){
   var дела=Д.задания.map(подготовитьДело).filter(function(з){return з.n>=0;})
     .sort(function(a,b){return a.n-b.n;});
   if(дела.length){
-    эк.appendChild(эл('div','секц','Ближайшие сроки'));
+    эк.appendChild(эл('div','секц','Ближайшие задания'));
     дела.slice(0,3).forEach(function(з){эк.appendChild(картаДела(з));});
     if(дела.length>3){
       var к=эл('button','ещё','Ещё '+(дела.length-3)+' — открыть задания →');
