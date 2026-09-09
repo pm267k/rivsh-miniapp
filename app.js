@@ -214,18 +214,24 @@ function подготовитьДело(з){
           срок:с, n:с.дата? d0(с.дата) : 99999, подпись:подписьСрока(с), кл:классСрока(с)};
 }
 function картаДела(з){
-  var c=эл('div','карта');
-  var низ='';
-  if(з.мат) низ+='<a class="кнопка главная" data-сс="'+экр(з.мат)+'">Открыть материал</a>';
-  if(з.ком) низ+='<span class="мелко" style="margin:0">'+экр(з.ком)+'</span>';
+  var c=эл('button','карта');
+  var срокТекст=з.срок.точная&&з.срок.дата ? 'до '+ддмм(з.срок.дата) : '';
+  // подпись срока уже стоит чипом справа — в строке под названием её не повторяем
+  var подпись=[з.кто, срокТекст].filter(Boolean).join(' · ');
   c.appendChild(эл('div','дело',
     '<div class="верх"><div class="предмет">'+экр(з.дис||'без дисциплины')+'</div>'+
     '<span class="срок'+з.кл+'">'+экр(з.подпись)+'</span></div>'+
     '<div class="что">'+экр(з.что)+'</div>'+
-    '<div class="мелко">'+экр(з.кто||'')+(з.срок.точная&&з.срок.дата?' · до '+ддмм(з.срок.дата):(з.срок.текст?' · '+экр(з.срок.текст):''))+'</div>'+
-    (низ?'<div class="низ">'+низ+'</div>':'')));
-  var a=c.querySelector('[data-сс]');
-  if(a) a.onclick=function(e){e.preventDefault(); вибро(); открыть(a.getAttribute('data-сс'));};
+    (подпись?'<div class="мелко">'+экр(подпись)+'</div>':'')+
+    (з.ком?'<div class="мелко коммент">'+экр(з.ком)+'</div>':'')+
+    (з.мат?'<div class="низ"><span class="кнопка главная">Открыть материал</span></div>':'')));
+  // вся карточка — одна цель: тап открывает материал, а если его нет — разворачивает комментарий
+  c.onclick=function(){
+    вибро();
+    if(з.мат){ открыть(з.мат); return; }
+    var к=c.querySelector('.коммент');
+    if(к) к.classList.toggle('раскрыт');
+  };
   return c;
 }
 function экранДел(){
@@ -420,6 +426,9 @@ function экранЛюдей(){
         var низ=эл('div','низ');
         if(ч.тг){var b=эл('a','кнопка главная','Написать в Telegram'); b.onclick=function(e){e.stopPropagation(); вибро(); написать(ч.тг);}; низ.appendChild(b);}
         if(ч.тел&&ч.тел.indexOf('•')<0){var t=эл('a','кнопка','Позвонить'); t.href='tel:'+ч.тел.replace(/\s/g,''); низ.appendChild(t);}
+        if(ч.инст){var g=эл('a','кнопка','Instagram');
+          g.onclick=function(e){e.stopPropagation(); вибро(); открыть('https://instagram.com/'+String(ч.инст).replace('@','').replace(/^https?:\/\/(www\.)?instagram\.com\//,''));};
+          низ.appendChild(g);}
         if(низ.children.length) д.appendChild(низ);
         c.appendChild(д);
       }

@@ -92,6 +92,8 @@ button.карта{cursor:pointer}
 .кнопка{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface-2);
   color:var(--ink);border-radius:9px;padding:6px 11px;font-size:12.5px;cursor:pointer;text-decoration:none}
 .кнопка.главная{background:var(--lime);border-color:var(--lime-deep);color:#16232E;font-weight:600}
+.коммент{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.коммент.раскрыт{-webkit-line-clamp:unset;overflow:visible}
 .ещё{width:100%;border:1px dashed var(--line);background:none;color:var(--ink-2);border-radius:12px;
   padding:11px;font-size:13px;cursor:pointer;margin-top:2px}
 
