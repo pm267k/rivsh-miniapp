@@ -248,7 +248,7 @@ function картаДела(з){
   setTimeout(function(){
     var к=c.querySelector('.коммент');
     if(!к) return;
-    if(к.scrollHeight<=к.clientHeight+1){ к.classList.add('раскрыт'); return; }
+    if(к.scrollHeight<=к.clientHeight+2){ к.classList.add('раскрыт'); return; }
     c.classList.add('можно-раскрыть');
     c.onclick=function(){ вибро(); к.classList.toggle('раскрыт'); c.classList.toggle('раскрыта'); };
   },0);

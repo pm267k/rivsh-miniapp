@@ -68,8 +68,12 @@ button.карта{cursor:pointer}
 .кнопка{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface-2);
   color:var(--ink);border-radius:9px;padding:6px 11px;font-size:12.5px;cursor:pointer;text-decoration:none}
 .кнопка.главная{background:var(--lime);border-color:var(--lime-deep);color:#131A20;font-weight:600}
-.коммент{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
-.коммент.раскрыт{-webkit-line-clamp:unset;overflow:visible}
+/* Раскрытие описания: анимируем max-height, а не line-clamp — тот переключается
+   рывком и подмигивает на первом кадре (09.09). */
+.коммент{overflow:hidden;max-height:1.5em;
+  transition:max-height .22s ease, opacity .22s ease;will-change:max-height}
+.коммент.раскрыт{max-height:14em}
+@media (prefers-reduced-motion:reduce){.коммент{transition:none}}
 .можно-раскрыть .коммент{position:relative;padding-right:16px}
 .можно-раскрыть .коммент::after{content:"…";position:absolute;right:0;bottom:0;color:var(--muted)}
 .можно-раскрыть.раскрыта .коммент::after{content:""}
