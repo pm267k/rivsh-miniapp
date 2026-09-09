@@ -11,15 +11,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600&family=Golos+Text:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 
-<link rel="stylesheet" href="tokens.css?v=0909-1740">
-<link rel="stylesheet" href="/rivsh-miniapp/styles.css?v=0909-1740">
+<link rel="stylesheet" href="tokens.css?v=0909-1751">
+<link rel="stylesheet" href="/rivsh-miniapp/styles.css?v=0909-1751">
 </head>
 <body>
-<div class="экран" id="экран"><div class="скелет"></div><div class="скелет"></div><div class="скелет"></div></div>
+<div class="экран" id="экран">
+  <div class="загрузка">
+    <div class="пульс"><svg viewBox="0 0 24 24"><path d="M3 9h18M7 3v3m10-3v3M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/></svg></div>
+    <div class="подпись-загрузки">Собираю расписание и задания</div>
+  </div>
+</div>
 <div class="табы" id="табы" role="tablist"></div>
 
 <script type="application/json" id="данные"></script>
 
-<script src="/rivsh-miniapp/app.js?v=0909-1740"></script>
+<script src="/rivsh-miniapp/app.js?v=0909-1751"></script>
 </body>
 </html>

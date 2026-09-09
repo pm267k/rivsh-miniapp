@@ -459,7 +459,7 @@ var АПИ='https://script.google.com/macros/s/AKfycbzDZD5a7kY_FKwNLizfpSIut3iwx
 /** JSONP: Apps Script не отдаёт CORS-заголовки, поэтому грузим как скрипт. */
 function черезСкрипт(url, готово, беда){
   var имя='cb'+Date.now();   // ⚠️ только латиница: кириллицу в параметрах Google отбивает 400-м
-  var т=setTimeout(function(){ прибрать(); беда(new Error('Apps Script не ответил')); }, 25000);
+  var т=setTimeout(function(){ прибрать(); беда(new Error('Таблица долго не отвечает')); }, 45000);
   function прибрать(){ clearTimeout(т); delete window[имя]; if(s.parentNode) s.parentNode.removeChild(s); }
   window[имя]=function(о){ прибрать(); готово(о); };
   var s=document.createElement('script');
@@ -484,7 +484,9 @@ if(вшито && вшито.charAt(0)==='{'){
       if(т.indexOf('ПМ 2.67к')>=0){ var м=т.match(/\[(.+)\]/); отказДоступа(); }
       else ошибка(экр(т)+(о&&о.где?'<br><br><span style="font-size:11px">'+экр(о.где)+'</span>':''));
     },
-    function(e){ ошибка(экр(e.message)); });
+    function(e){
+      ошибка(экр(e.message)+'<br><br><button class="кнопка главная" onclick="location.reload()">Попробовать ещё раз</button>');
+    });
 }else if(window.google && google.script && google.script.run){
   // initData — подписанные Telegram данные о том, кто открыл. Скрипт проверит подпись
   // и членство в чате; без них данных не отдаст.

@@ -133,4 +133,11 @@ button.карта{cursor:pointer}
 .точка{width:3px;height:3px;border-radius:50%;background:var(--muted);opacity:.6}
 .плитка.идёт{border-left:3px solid var(--lime-deep)}
 .свежесть{font-size:11px;color:var(--muted);text-align:center;padding:16px 0 4px;font-family:"IBM Plex Mono",monospace}
-.скелет{height:66px;border-radius:14px;background:var(--surface);margin-bottom:8px;opacity:.6}
+/* экран загрузки: спокойное состояние вместо мигающих плашек */
+.загрузка{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;min-height:60vh;text-align:center}
+.пульс{width:72px;height:72px;border-radius:50%;background:var(--lime-soft);
+  border:1px solid var(--lime-deep);display:grid;place-items:center;animation:дышит 1.8s ease-in-out infinite}
+.пульс svg{width:30px;height:30px;stroke:var(--ink);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.подпись-загрузки{color:var(--muted);font-size:13.5px}
+@keyframes дышит{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.75}}
