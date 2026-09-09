@@ -9,20 +9,20 @@
   --red:#A8342B; --red-soft:#FBE9E7;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --ground:#0C1319; --surface:#151F27; --surface-2:#1B2830;
-  --ink:#E7EEF2; --ink-2:#B9C8D2; --muted:#8698A5;
-  --line:#26343E; --line-soft:#1F2C35;
-  --lime:#CDEA5C; --lime-deep:#A6C831; --lime-soft:#232E1A;
-  --link:#7FB0FF; --amber:#E3B457; --amber-soft:#2A2415; --amber-line:#5C4A22;
-  --red:#F0938A; --red-soft:#2E1A18;
+  --ground:#0F1418; --surface:#171F26; --surface-2:#1F2A33;
+  --ink:#F3F3F1; --ink-2:#D6DAD2; --muted:#8E93A0;
+  --line:#28323A; --line-soft:#212A31;
+  --lime:#DFFB76; --lime-deep:#C7EB45; --lime-soft:#232E1A;
+  --link:#8FB8FF; --amber:#E3B457; --amber-soft:#2A2415; --amber-line:#5C4A22;
+  --red:#F08A8E; --red-soft:#2E1A1B;
 }}
 :root[data-theme="dark"]{
-  --ground:#0C1319; --surface:#151F27; --surface-2:#1B2830;
-  --ink:#E7EEF2; --ink-2:#B9C8D2; --muted:#8698A5;
-  --line:#26343E; --line-soft:#1F2C35;
-  --lime:#CDEA5C; --lime-deep:#A6C831; --lime-soft:#232E1A;
-  --link:#7FB0FF; --amber:#E3B457; --amber-soft:#2A2415; --amber-line:#5C4A22;
-  --red:#F0938A; --red-soft:#2E1A18;
+  --ground:#0F1418; --surface:#171F26; --surface-2:#1F2A33;
+  --ink:#F3F3F1; --ink-2:#D6DAD2; --muted:#8E93A0;
+  --line:#28323A; --line-soft:#212A31;
+  --lime:#DFFB76; --lime-deep:#C7EB45; --lime-soft:#232E1A;
+  --link:#8FB8FF; --amber:#E3B457; --amber-soft:#2A2415; --amber-line:#5C4A22;
+  --red:#F08A8E; --red-soft:#2E1A1B;
 }
 *{box-sizing:border-box;min-width:0}                 /* min-width:0 — иначе длинные строки распирают grid-ячейки */
 html,body{height:100%;max-width:100%;overflow-x:hidden}
@@ -75,7 +75,7 @@ button.карта{cursor:pointer}
 .день .число{font-family:Unbounded,sans-serif;font-size:17px;font-weight:600;min-width:2.2em}
 .день .подпись{font-size:12px;color:var(--muted)}
 .день.сегодня .число{color:var(--ink)}
-.день.сегодня .метка{background:var(--lime);color:#16232E;border-radius:20px;padding:1px 9px;font-size:10.5px;font-weight:600}
+.день.сегодня .метка{background:var(--lime);color:#131A20;border-radius:20px;padding:1px 9px;font-size:10.5px;font-weight:600}
 .день::after{content:"";flex:1;height:1px;background:var(--line-soft)}
 
 /* задание */
@@ -91,7 +91,7 @@ button.карта{cursor:pointer}
 .низ{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px}
 .кнопка{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface-2);
   color:var(--ink);border-radius:9px;padding:6px 11px;font-size:12.5px;cursor:pointer;text-decoration:none}
-.кнопка.главная{background:var(--lime);border-color:var(--lime-deep);color:#16232E;font-weight:600}
+.кнопка.главная{background:var(--lime);border-color:var(--lime-deep);color:#131A20;font-weight:600}
 .коммент{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .коммент.раскрыт{-webkit-line-clamp:unset;overflow:visible}
 .ещё{width:100%;border:1px dashed var(--line);background:none;color:var(--ink-2);border-radius:12px;
@@ -104,7 +104,7 @@ button.карта{cursor:pointer}
 .чипы::-webkit-scrollbar{display:none}
 .чип{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:20px;
   padding:6px 12px;font-size:12.5px;cursor:pointer;white-space:nowrap;flex:none}
-.чип[aria-pressed="true"]{background:var(--lime);border-color:var(--lime-deep);color:#16232E;font-weight:600}
+.чип[aria-pressed="true"]{background:var(--lime);border-color:var(--lime-deep);color:#131A20;font-weight:600}
 .счёт{font-size:12px;color:var(--muted);margin:2px 0 10px;font-family:"IBM Plex Mono",monospace}
 
 /* книга */
@@ -120,7 +120,7 @@ button.карта{cursor:pointer}
 .раскрыто{margin-top:11px;padding-top:11px;border-top:1px solid var(--line-soft);display:grid;gap:8px}
 .строка{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px}
 .строка b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-variant-numeric:tabular-nums}
-.роль{font-size:10px;background:var(--lime);color:#16232E;border-radius:5px;padding:1px 6px;margin-left:6px;font-weight:600}
+.роль{font-size:10px;background:var(--lime);color:#131A20;border-radius:5px;padding:1px 6px;margin-left:6px;font-weight:600}
 .пусто{color:var(--muted);font-size:13.5px;padding:24px 0;text-align:center}
 
 /* экран отказа: заголовок и текст на одной вертикали, блок по центру экрана */
