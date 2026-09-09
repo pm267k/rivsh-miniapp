@@ -451,16 +451,18 @@ function ошибка(текст, заголовок){
   эк.appendChild(эл('div','шапка','<h2>'+экр(заголовок||'Не удалось загрузить')+'</h2>'));
   эк.appendChild(эл('div','пусто',текст));
 }
-/** Экран для тех, кто не в группе. Человек должен понять, куда попал и что делать. */
+/** Экран для тех, кто не в группе: куда попал и что делать. */
 function отказДоступа(){
   эк.innerHTML='';
+  эк.style.display='flex';
   document.getElementById('табы').style.display='none';
-  var б=эл('div','отказ',
+  эк.appendChild(эл('div','отказ',
+    '<div class="знак"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/>'+
+    '<path d="M8 11V7a4 4 0 018 0v4"/></svg></div>'+
     '<h2>Доступ закрыт</h2>'+
-    '<p>Это внутреннее приложение учебной группы <b>ПМ 2.67к</b> — веб-психология, РИВШ, набор 2026 года.</p>'+
-    '<p>Здесь расписание, задания и материалы группы, поэтому оно открыто только её участникам.</p>'+
-    '<p class="тише">Если ты из группы, а приложение не пускает — напиши <a href="https://t.me/constantinserdiuk">@constantinserdiuk</a>.</p>');
-  эк.appendChild(б);
+    '<p>Приложение учебной группы <b>ПМ 2.67к</b> — веб-психология, РИВШ.</p>'+
+    '<p>Внутри расписание, задания и материалы группы, поэтому оно открыто только её участникам.</p>'+
+    '<p class="тише">Ты из группы, но не пускает? Напиши <a href="https://t.me/constantinserdiuk">@constantinserdiuk</a></p>'));
 }
 /* Адрес API. Пустой — значит страницу отдаёт сам Apps Script (запасной путь). */
 var АПИ='https://script.google.com/macros/s/AKfycbzDZD5a7kY_FKwNLizfpSIut3iwxCp2VTIxZIKr-8aQxdPdelMkoVoooCOywIYJ3CtRaQ/exec';

@@ -98,12 +98,17 @@ button.карта{cursor:pointer}
 .роль{font-size:10px;background:var(--lime);color:#131A20;border-radius:5px;padding:1px 6px;margin-left:6px;font-weight:600}
 .пусто{color:var(--muted);font-size:13.5px;padding:24px 0;text-align:center}
 
-/* экран отказа: заголовок и текст на одной вертикали, блок по центру экрана */
-.отказ{min-height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
-  gap:14px;max-width:34ch;margin:0 auto;text-align:center}
-.отказ h2{font-size:24px;line-height:1.15}
-.отказ p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.5}
-.отказ p.тише{color:var(--muted);font-size:13.5px}
+/* экран отказа: занимает всю высоту, содержимое строго по центру.
+   Узкая колонка (26ch) — центрированный текст шире читается плохо. */
+.отказ{min-height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  gap:12px;text-align:center;padding:0 4px}
+.отказ .знак{width:64px;height:64px;border-radius:50%;background:var(--lime-soft);
+  border:1px solid var(--lime-deep);display:grid;place-items:center;margin-bottom:6px}
+.отказ .знак svg{width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round}
+.отказ h2{font-size:21px;line-height:1.2}
+.отказ p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.5;max-width:26ch}
+.отказ p.тише{color:var(--muted);font-size:13px;margin-top:4px}
 
 /* предмет */
 .назад{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--muted);
