@@ -453,7 +453,7 @@ function ошибка(текст, заголовок){
 /** Экран для тех, кто не в группе: куда попал и что делать. */
 function отказДоступа(){
   эк.innerHTML='';
-  эк.style.display='flex';
+  эк.classList.add('по-центру');
   document.getElementById('табы').style.display='none';
   эк.appendChild(эл('div','отказ',
     '<div class="знак"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/>'+
