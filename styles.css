@@ -1,12 +1,15 @@
-/* Палитра — из таблицы группы: тёмно-синий шапок #16232E, лаймовые полосы #E3F9A6,
-   янтарь отметки ★ #FFF9E6, синий ссылок #1155CC. */
+/* Палитра — токены KIT v3 (projects/ai/kit/brand/kit-tokens.css): салатовый #DFFB76
+   на навьем #131A20. Берём цвет и ритм, но не знак и не кита-персонажа: это
+   приложение учебной группы, а не витрина бренда. Акцент таблицы (#E3F9A6) оказался
+   тем же салатовым — визуальная семья сошлась сама.
+   🔴 Правило брендбука: на салатовом текст только навий, белый НИКОГДА. */
 :root{
-  --ground:#EEF3F5; --surface:#fff; --surface-2:#F4F8F9;
-  --ink:#16232E; --ink-2:#3D4F5C; --muted:#6B7A87;
-  --line:#DCE5E9; --line-soft:#E9F0F2;
-  --lime:#DCF56B; --lime-deep:#B7D93A; --lime-soft:#F1FBD2;
+  --ground:#F3F3F1; --surface:#fff; --surface-2:#FAFAF8;
+  --ink:#131A20; --ink-2:#1F2A33; --muted:#8E93A0;
+  --line:#E4E6E0; --line-soft:#EFF0EC;
+  --lime:#DFFB76; --lime-deep:#C7EB45; --lime-soft:#EFFBC9;
   --link:#1155CC; --amber:#9A6B12; --amber-soft:#FFF4D6; --amber-line:#E8C88A;
-  --red:#A8342B; --red-soft:#FBE9E7;
+  --red:#E5484D; --red-soft:#FDECEC;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --ground:#0F1418; --surface:#171F26; --surface-2:#1F2A33;
