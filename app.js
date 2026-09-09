@@ -492,8 +492,50 @@ function спроситьТаблицу(url, готово, беда){
 }
 
 var вшито=document.getElementById('данные').textContent.trim();
+
+/** Последний удачный ответ храним в телефоне: открытие становится мгновенным,
+    свежие данные подтягиваются фоном и молча заменяют показанное. */
+var ПАМЯТЬ='пм267к-данные';
+function изПамяти(){
+  try{ var т=localStorage.getItem(ПАМЯТЬ); return т?JSON.parse(т):null; }catch(e){ return null; }
+}
+function вПамять(д){
+  try{ localStorage.setItem(ПАМЯТЬ, JSON.stringify(д)); }catch(e){}
+}
+
 if(вшито && вшито.charAt(0)==='{'){
   Д=JSON.parse(вшито); отрисовать();
+}else if(АПИ.indexOf('http')===0){
+  var подпись=(ТГ && ТГ.initData) ? ТГ.initData : '';
+  var было=изПамяти();
+  if(было){ Д=было; отрисовать(); }              // показываем сразу, не ждём сервер
+  спроситьТаблицу(АПИ+'?data=1&init='+encodeURIComponent(подпись),
+    function(о){
+      if(о && о.ok){
+        Д=о.данные; вПамять(Д);
+        try{ отрисовать(); }
+        catch(e){ ошибка(экр('при отрисовке: '+e.message)); }
+        return;
+      }
+      var т=String((о && о.ошибка)||'нет ответа').replace(/^Error:?\s*/,'');
+      if(т.indexOf('ПМ 2.67к')>=0){ отказДоступа(); return; }
+      if(!было) ошибка(экр(т));                   // есть что показать — молчим о сбое
+    },
+    function(e){
+      if(было) return;                            // офлайн: остаёмся на сохранённых данных
+      ошибка(экр(e.message)+'<br><br><button class="кнопка главная" onclick="location.reload()">Попробовать ещё раз</button>');
+    });
+}else if(window.google && google.script && google.script.run){
+  var п2=(ТГ && ТГ.initData) ? ТГ.initData : '';
+  google.script.run
+    .withSuccessHandler(function(д){ Д=(typeof д==='string'?JSON.parse(д):д); отрисовать(); })
+    .withFailureHandler(function(e){
+      var т=(e&&e.message?e.message:String(e)).replace(/^Error:?\s*/,'');
+      if(т.indexOf('ПМ 2.67к')>=0) отказДоступа(); else ошибка(экр(т));
+    })
+    .данныеГруппы(п2);
+}else{
+  отказДоступа();
 }else if(АПИ.indexOf('http')===0){
   var подпись=(ТГ && ТГ.initData) ? ТГ.initData : '';
   спроситьТаблицу(АПИ+'?data=1&init='+encodeURIComponent(подпись),
