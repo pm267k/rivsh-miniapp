@@ -107,6 +107,8 @@ button.карта{cursor:pointer}
   display:grid;place-items:center;font-size:14px;font-weight:600;flex:none;border:1px solid var(--lime-deep)}
 .человек .имя{font-size:14px;line-height:1.25;font-weight:500}
 .раскрыто{margin-top:11px;padding-top:11px;border-top:1px solid var(--line-soft);display:grid;gap:8px}
+/* без этого display:grid перебивает [hidden] и карточки открыты всегда */
+.раскрыто[hidden]{display:none}
 .строка{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px}
 .карта.человек-карта{cursor:pointer}
 .почта-строка{cursor:pointer}
