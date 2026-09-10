@@ -510,12 +510,13 @@ function инициалы(п){ return ((п.фам||' ')[0]||'')+((п.имя||' '
 /** Дисциплина преподавателя лежит первой частью заметки, до « · ». */
 function дисциплинаИз(зам){ return String(зам||'').split('·')[0].trim(); }
 
-function копировать(текст, узел){
+function копировать(текст, узел, метка){
   try{
     if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(текст);
     else { var t=document.createElement('textarea'); t.value=текст; document.body.appendChild(t);
            t.select(); document.execCommand('copy'); document.body.removeChild(t); }
-    var б=узел.querySelector('.метка'); if(б){ б.textContent='скопировано'; setTimeout(function(){б.textContent='почта';},1500); }
+    var б=узел.querySelector('.метка');
+    if(б){ б.textContent='скопировано'; setTimeout(function(){б.textContent=метка||'';},1500); }
   }catch(e){}
 }
 
@@ -536,23 +537,21 @@ function экранЛюдей(){
       c.innerHTML='<div class="человек"><div class="аватар">'+экр(инициалы(п))+'</div>'+
         '<div><div class="имя">'+экр(п.коротко)+
         (ч.имя.indexOf('староста')>=0?'<span class="роль">староста</span>':'')+'</div>'+
-        '<div class="мелко">'+экр(дис||ч.тг||'')+'</div></div></div>';
+        (дис?'<div class="мелко">'+экр(дис)+'</div>':'')+'</div></div></div>';
 
       var д=эл('div','раскрыто'); д.hidden=!раскрытые[ключ];
-      if(ч.поч){
-        var стр=эл('div','строка почта-строка','<span class="мелко метка">почта</span><span>'+экр(ч.поч)+'</span>');
-        стр.onclick=function(e){ e.stopPropagation(); вибро(); копировать(ч.поч, стр); };
+      // 🔴 Telegram WebApp пускает только https и tg — переходы tel: и mailto: он глушит,
+      // хоть ссылкой, хоть программно (проверено 10.09). Поэтому телефон и почта здесь
+      // не кнопки, а строки, которые копируются по тапу.
+      function строкаКопии(метка, значение){
+        var стр=эл('div','строка копируемая',
+          '<span class="мелко метка">'+экр(метка)+'</span><span class="значение">'+экр(значение)+'</span>');
+        стр.onclick=function(e){ e.stopPropagation(); вибро(); копировать(значение, стр, метка); };
         д.appendChild(стр);
       }
+      if(ч.тел&&ч.тел.indexOf('•')<0) строкаКопии('телефон', ч.тел);
+      if(ч.поч) строкаКопии('почта', ч.поч);
       var низ=эл('div','низ');
-      if(ч.тел&&ч.тел.indexOf('•')<0){
-        var t=эл('a','кнопка','<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>Телефон');
-        // Настоящая ссылка tel: — WebView Telegram обрабатывает её сам. Программный переход
-        // по location он блокирует, поэтому только гасим всплытие, чтобы карточка не схлопнулась.
-        t.href='tel:'+ч.тел.replace(/[^\d+]/g,'');
-        t.onclick=function(e){ e.stopPropagation(); вибро(); };
-        низ.appendChild(t);
-      }
       if(ч.тг){
         var b=эл('a','кнопка','<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M21.9 4.3 18.9 19c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.2.3-.5.5-1 .5l.3-4.7 8.5-7.7c.4-.3-.1-.5-.6-.2L6.2 13l-4.5-1.4c-1-.3-1-1 .2-1.5l17.6-6.8c.8-.3 1.5.2 1.2 1.4z"/></svg>Telegram');
         b.onclick=function(e){ e.stopPropagation(); вибро(); написать(ч.тг); };

@@ -111,8 +111,10 @@ button.карта{cursor:pointer}
 .раскрыто[hidden]{display:none}
 .строка{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px}
 .карта.человек-карта{cursor:pointer}
-.почта-строка{cursor:pointer}
-.почта-строка span:last-child{text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
+.копируемая{cursor:pointer;flex-wrap:wrap}
+.копируемая .метка{flex:none}
+.копируемая .значение{flex:1;min-width:0;text-align:right;overflow-wrap:anywhere;
+  text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
 .строка b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-variant-numeric:tabular-nums}
 .роль{font-size:10px;background:var(--lime);color:#131A20;border-radius:5px;padding:1px 6px;margin-left:6px;font-weight:600}
 .пусто{color:var(--muted);font-size:13.5px;padding:24px 0;text-align:center}
