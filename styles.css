@@ -111,6 +111,9 @@ button.карта{cursor:pointer}
 .раскрыто[hidden]{display:none}
 .строка{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px}
 .карта.человек-карта{cursor:pointer}
+/* та же стрелка, что у пар, только смотрит вниз; при раскрытии — вверх */
+.ведёт.вниз{margin-left:auto;transform:rotate(90deg);transition:none}
+.карта.человек-карта.открыта .ведёт.вниз{transform:rotate(-90deg)}
 .копируемая{cursor:pointer;flex-wrap:wrap}
 .копируемая .метка{flex:none}
 .копируемая .значение{flex:1;min-width:0;text-align:right;overflow-wrap:anywhere;

@@ -6,7 +6,10 @@ if (ТГ && ТГ.initData !== undefined) {
 }
 function вибро(){ try{ ТГ.HapticFeedback.selectionChanged(); }catch(e){} }
 function открыть(url){ if(!url) return; try{ ТГ.openLink(url); }catch(e){ window.open(url,'_blank','noopener'); } }
-function написать(ник){ var u='https://t.me/'+String(ник).replace('@',''); try{ ТГ.openTelegramLink(u); }catch(e){ window.open(u,'_blank','noopener'); } }
+/** В колонке Telegram у преподавателей встречается «@ник · канал «…»» — берём только ник.
+    Иначе весь хвост уезжает в адрес и ссылка не открывается (поймано 10.09 на Галецком). */
+function чистыйНик(ник){ return String(ник||'').split('·')[0].trim().replace(/^@/,'').replace(/^https?:\/\/(t\.me|telegram\.me)\//,''); }
+function написать(ник){ var u='https://t.me/'+чистыйНик(ник); try{ ТГ.openTelegramLink(u); }catch(e){ window.open(u,'_blank','noopener'); } }
 
 var эк=document.getElementById('экран'), Д=null;
 function эл(т,кл,вн){var e=document.createElement(т); if(кл)e.className=кл; if(вн!=null)e.innerHTML=вн; return e;}
@@ -537,7 +540,8 @@ function экранЛюдей(){
       c.innerHTML='<div class="человек"><div class="аватар">'+экр(инициалы(п))+'</div>'+
         '<div><div class="имя">'+экр(п.коротко)+
         (ч.имя.indexOf('староста')>=0?'<span class="роль">староста</span>':'')+'</div>'+
-        (дис?'<div class="мелко">'+экр(дис)+'</div>':'')+'</div></div></div>';
+        (дис?'<div class="мелко">'+экр(дис)+'</div>':'')+'</div>'+
+        '<div class="ведёт вниз">›</div></div>';
 
       var д=эл('div','раскрыто'); д.hidden=!раскрытые[ключ];
       // 🔴 Telegram WebApp пускает только https и tg — переходы tel: и mailto: он глушит,
@@ -565,7 +569,9 @@ function экранЛюдей(){
       }
       if(низ.children.length) д.appendChild(низ);
       c.appendChild(д);
-      c.onclick=function(){ раскрытые[ключ]=!раскрытые[ключ]; д.hidden=!раскрытые[ключ]; вибро(); };
+      if(раскрытые[ключ]) c.classList.add('открыта');
+      c.onclick=function(){ раскрытые[ключ]=!раскрытые[ключ]; д.hidden=!раскрытые[ключ];
+        c.classList.toggle('открыта', !!раскрытые[ключ]); вибро(); };
       эк.appendChild(c);
     });
   });
