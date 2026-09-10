@@ -47,6 +47,13 @@ button.карта{cursor:pointer}
   font-variant-numeric:tabular-nums;line-height:1.35}
 .дис{font-weight:600;font-size:14.5px;line-height:1.3}
 .мелко{font-size:12.5px;color:var(--muted);margin-top:3px}
+/* Комментарии к заданиям приходят из таблицы многострочными — переносы держим. */
+.мелко.текст{white-space:pre-line}
+/* Сворачивание описаний: без transition — в WebView Telegram анимация высоты давала вспышку. */
+.мелко.текст.свёрнут{max-height:3.4em;overflow:hidden;position:relative}
+.мелко.текст.свёрнут::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1.5em;
+  background:linear-gradient(180deg,transparent,var(--surface))}
+.ещё{display:inline-block;margin-top:4px;font-size:12.5px;color:#1155CC;cursor:pointer}
 .вид{margin-top:5px}
 .бейдж{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:20px;
   background:var(--lime-soft);border:1px solid var(--lime-deep);color:var(--ink)}
