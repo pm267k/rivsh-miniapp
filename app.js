@@ -496,6 +496,29 @@ function рядСо(текст, право, действие, мертвый){
 }
 
 /* ---------- Контакты ---------- */
+/** «Тюхлова (Вихновская) Екатерина Олеговна» → фамилия «Вихновская», имя «Екатерина».
+    Фамилия в скобках — текущая: под ней человека и знают в группе. */
+function разобратьИмя(полное){
+  var т=String(полное||'').replace(' · староста','').trim();
+  var вскобках=т.match(/\(([^)]+)\)/);
+  var без=т.replace(/\s*\([^)]*\)\s*/g,' ').replace(/\s+/g,' ').trim().split(' ');
+  var фам=вскобках? вскобках[1].trim() : (без[0]||'');
+  var имя=вскобках? (без[1]||'') : (без[1]||'');
+  return {фам:фам, имя:имя, коротко:(фам+' '+имя).trim()};
+}
+function инициалы(п){ return ((п.фам||' ')[0]||'')+((п.имя||' ')[0]||''); }
+/** Дисциплина преподавателя лежит первой частью заметки, до « · ». */
+function дисциплинаИз(зам){ return String(зам||'').split('·')[0].trim(); }
+
+function копировать(текст, узел){
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(текст);
+    else { var t=document.createElement('textarea'); t.value=текст; document.body.appendChild(t);
+           t.select(); document.execCommand('copy'); document.body.removeChild(t); }
+    var б=узел.querySelector('.метка'); if(б){ б.textContent='скопировано'; setTimeout(function(){б.textContent='почта';},1500); }
+  }catch(e){}
+}
+
 function экранЛюдей(){
   эк.appendChild(эл('div','шапка','<h2>Контакты</h2>'));
   var секции={};
@@ -503,30 +526,44 @@ function экранЛюдей(){
   Object.keys(секции).forEach(function(с){
     эк.appendChild(эл('div','секц',экр(с)));
     секции[с].forEach(function(ч,i){
-      var ключ=с+i, открыт=!!раскрытые[ключ];
-      var имя=ч.имя.replace(' · староста','');
-      var части=имя.split(' ');
-      var c=эл('button','карта');
-      c.innerHTML='<div class="человек"><div class="аватар">'+
-        экр(((части[0]||' ')[0]||'')+((части[1]||' ')[0]||''))+'</div>'+
-        '<div><div class="имя">'+экр(части.slice(0,2).join(' '))+
+      var ключ=с+i;
+      var п=разобратьИмя(ч.имя);
+      var дис=дисциплинаИз(ч.зам);
+      // 🔴 Не <button>: WebView Telegram засчитывает тап после протяжки, и список
+      // раскрывался сам при прокрутке. И не перерисовываем экран целиком — иначе
+      // прокрутка отскакивает в начало (поймано 09.09).
+      var c=эл('div','карта человек-карта');
+      c.innerHTML='<div class="человек"><div class="аватар">'+экр(инициалы(п))+'</div>'+
+        '<div><div class="имя">'+экр(п.коротко)+
         (ч.имя.indexOf('староста')>=0?'<span class="роль">староста</span>':'')+'</div>'+
-        '<div class="мелко">'+экр(ч.тг||ч.тел||'—')+'</div></div></div>';
-      if(открыт){
-        var д=эл('div','раскрыто');
-        if(ч.имя!==части.slice(0,2).join(' ')) д.appendChild(эл('div','строка','<span class="мелко">полное имя</span><span>'+экр(ч.имя.replace(' · староста',''))+'</span>'));
-        if(ч.тел) д.appendChild(эл('div','строка','<span class="мелко">телефон</span><b>'+экр(ч.тел)+'</b>'));
-        if(ч.поч) д.appendChild(эл('div','строка','<span class="мелко">почта</span><span>'+экр(ч.поч)+'</span>'));
-        var низ=эл('div','низ');
-        if(ч.тг){var b=эл('a','кнопка главная','Написать в Telegram'); b.onclick=function(e){e.stopPropagation(); вибро(); написать(ч.тг);}; низ.appendChild(b);}
-        if(ч.тел&&ч.тел.indexOf('•')<0){var t=эл('a','кнопка','Позвонить'); t.href='tel:'+ч.тел.replace(/\s/g,''); низ.appendChild(t);}
-        if(ч.инст){var g=эл('a','кнопка','Instagram');
-          g.onclick=function(e){e.stopPropagation(); вибро(); открыть('https://instagram.com/'+String(ч.инст).replace('@','').replace(/^https?:\/\/(www\.)?instagram\.com\//,''));};
-          низ.appendChild(g);}
-        if(низ.children.length) д.appendChild(низ);
-        c.appendChild(д);
+        '<div class="мелко">'+экр(дис||ч.тг||'')+'</div></div></div>';
+
+      var д=эл('div','раскрыто'); д.hidden=!раскрытые[ключ];
+      if(ч.поч){
+        var стр=эл('div','строка почта-строка','<span class="мелко метка">почта</span><span>'+экр(ч.поч)+'</span>');
+        стр.onclick=function(e){ e.stopPropagation(); вибро(); копировать(ч.поч, стр); };
+        д.appendChild(стр);
       }
-      c.onclick=function(){ раскрытые[ключ]=!раскрытые[ключ]; вибро(); отрисовать(); };
+      var низ=эл('div','низ');
+      if(ч.тел&&ч.тел.indexOf('•')<0){
+        var t=эл('a','кнопка','<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>Телефон');
+        t.onclick=function(e){ e.stopPropagation(); вибро(); window.location.href='tel:'+ч.тел.replace(/[^\d+]/g,''); };
+        низ.appendChild(t);
+      }
+      if(ч.тг){
+        var b=эл('a','кнопка','<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M21.9 4.3 18.9 19c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.2.3-.5.5-1 .5l.3-4.7 8.5-7.7c.4-.3-.1-.5-.6-.2L6.2 13l-4.5-1.4c-1-.3-1-1 .2-1.5l17.6-6.8c.8-.3 1.5.2 1.2 1.4z"/></svg>Telegram');
+        b.onclick=function(e){ e.stopPropagation(); вибро(); написать(ч.тг); };
+        низ.appendChild(b);
+      }
+      if(ч.инст){
+        var g=эл('a','кнопка','<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram');
+        g.onclick=function(e){ e.stopPropagation(); вибро();
+          открыть('https://instagram.com/'+String(ч.инст).split('·')[0].trim().replace('@','').replace(/^https?:\/\/(www\.)?instagram\.com\//,''));};
+        низ.appendChild(g);
+      }
+      if(низ.children.length) д.appendChild(низ);
+      c.appendChild(д);
+      c.onclick=function(){ раскрытые[ключ]=!раскрытые[ключ]; д.hidden=!раскрытые[ключ]; вибро(); };
       эк.appendChild(c);
     });
   });
