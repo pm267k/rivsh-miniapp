@@ -492,25 +492,28 @@ function экранКниг(){
   зв.setAttribute('data-ф','★'); ряд.appendChild(зв);
   // выбранный фильтр везде выглядит одинаково — зелёный, повторный тап снимает; без крестика (11.09)
   if(фКто) ряд.appendChild(чип(фКто.split(' ')[0], true, function(){фКто=''; отрисовать();}));
-  /* Фильтр в два уровня (решение владельца 12.09): пока предмет не выбран — в ряду предметы,
-     выбрал — остаётся он один, а за ним его разделы. Раньше все разделы всех предметов
-     стояли подряд: «нихера себе фильтры места занимают». */
-  if(фДис){
-    var пр=Д.книги.filter(function(к){return ключДис(к.д)===фДис;})[0];
-    ряд.appendChild(чип((пр?имяКапса(пр.д):фДис), true, function(){фДис=''; фРаздел=''; отрисовать();}));
-    var свои=Д.книги.filter(function(к){return ключДис(к.д)===фДис;});
-    var разделы=поПорядку(свои,'б').filter(function(б){return имяКапса(б)!==имяКапса(пр?пр.д:'');});
-    if(разделы.length>1) разделы.forEach(function(б){
-      var ч=чип(имяКапса(б), фРаздел===б, function(){фРаздел=(фРаздел===б?'':б); отметитьЧипы(); списокКниг();});
-      ч.setAttribute('data-ф',б); ряд.appendChild(ч);
-    });
-  }else{
-    поПорядку(Д.книги,'д').forEach(function(д){
-      var ч=чип(имяКапса(д), false, function(){ фДис=ключДис(д); фРаздел=''; отрисовать(); });
-      ряд.appendChild(ч);
-    });
-  }
+  /* Фильтр в два ряда (решение владельца 12.09): сверху ★ и предметы, под ними — разделы
+     выбранного предмета. Одним рядом все разделы всех предметов стояли подряд и уезжали
+     за экран: «нихера себе фильтры места занимают». */
+  поПорядку(Д.книги,'д').forEach(function(д){
+    var к=ключДис(д);
+    var ч=чип(имяКапса(д), фДис===к, function(){ фДис=(фДис===к?'':к); фРаздел=''; отрисовать(); });
+    ряд.appendChild(ч);
+  });
   эк.appendChild(ряд); показатьВыбранныйЧип(ряд);
+  if(фДис){
+    var свои=Д.книги.filter(function(к){return ключДис(к.д)===фДис;});
+    var имяПр=свои.length?имяКапса(свои[0].д):'';
+    var разделы=поПорядку(свои,'б').filter(function(б){return имяКапса(б)!==имяПр;});
+    if(разделы.length>1){
+      var ряд2=эл('div','чипы разделы'); ряд2.id='рядразделов';
+      разделы.forEach(function(б){
+        var ч=чип(имяКапса(б), фРаздел===б, function(){фРаздел=(фРаздел===б?'':б); отметитьЧипы(); списокКниг();});
+        ч.setAttribute('data-ф',б); ряд2.appendChild(ч);
+      });
+      эк.appendChild(ряд2); показатьВыбранныйЧип(ряд2);
+    }
+  }
 
   эк.appendChild(эл('div','счёт','','')); эк.lastChild.id='счёткниг';
   var h=эл('div'); h.id='спискниг'; эк.appendChild(h);
@@ -523,10 +526,12 @@ document.addEventListener('pointerdown', function(e){
   if(а && а.tagName==='INPUT' && e.target!==а && !(e.target.closest && e.target.closest('.поле'))) а.blur();
 }, {passive:true});
 function отметитьЧипы(){
-  var р=document.getElementById('рядкниг'); if(!р) return;
-  Array.prototype.forEach.call(р.querySelectorAll('[data-ф]'), function(x){
-    var ф=x.getAttribute('data-ф');
-    x.setAttribute('aria-pressed', (ф==='★'?фВажные:фРаздел===ф)?'true':'false');
+  ['рядкниг','рядразделов'].forEach(function(id){
+    var р=document.getElementById(id); if(!р) return;
+    Array.prototype.forEach.call(р.querySelectorAll('[data-ф]'), function(x){
+      var ф=x.getAttribute('data-ф');
+      x.setAttribute('aria-pressed', (ф==='★'?фВажные:фРаздел===ф)?'true':'false');
+    });
   });
 }
 function чип(текст,активен,действие){

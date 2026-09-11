@@ -118,6 +118,7 @@ button.карта{cursor:pointer}
 /* фильтры */
 .поиск{width:100%;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);
   border-radius:12px;padding:10px 12px;font-family:inherit;font-size:16px;margin-bottom:10px}
+.чипы.разделы{margin-top:-4px}
 .чипы{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:6px;scrollbar-width:none}
 .чипы::-webkit-scrollbar{display:none}
 .чип{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:20px;
