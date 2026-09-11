@@ -71,15 +71,25 @@ button.карта{cursor:pointer}
 #списокдел .ещё{margin:2px 0 8px}
 
 .вид{margin-top:5px}
-.бейдж{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:20px;
-  background:var(--lime-soft);border:1px solid var(--lime-line);color:var(--ink)}
+/* ═══ Четыре правила стиля (решение 11.09, записаны в rivsh-miniapp.md) ═══
+   1. Сплошной салатовый — главное действие и «выбрано сейчас»: кнопка, нажатый фильтр,
+      метка «сегодня», вкладка. Без обводки другого оттенка.
+   2. Обводка — только у того, что нажимается: вторичные кнопки, фильтры, строки-переходы,
+      «ещё» (пунктиром). Есть обводка — можно нажать.
+   3. Метки — мягкая полупрозрачная заливка без обводки, скруглённый прямоугольник, как у кнопок:
+      даты, тип пары, тип материала, «староста», «сегодня», аватар. Только сообщают.
+      Полупрозрачная — чтобы метка на салатовой карточке не становилась серой заплаткой.
+      Форма таблетки — только у фильтров.
+   4. Выделенная карточка — рамка акцента: только «пары сегодня».                    */
+.бейдж{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:7px;
+  background:var(--метка);color:var(--ink-2)}
 
 /* день в расписании */
 .день{display:flex;align-items:center;gap:10px;margin:18px 0 8px}
 .день .число{font-family:Unbounded,sans-serif;font-size:17px;font-weight:600;min-width:2.2em}
 .день .подпись{font-size:12px;color:var(--muted)}
 .день.сегодня .число{color:var(--ink)}
-.день.сегодня .метка{background:var(--lime);color:#131A20;border-radius:20px;padding:1px 9px;font-size:10.5px;font-weight:600}
+.день.сегодня .метка{background:var(--lime);color:#131A20;border-radius:7px;padding:1px 9px;font-size:10.5px;font-weight:600}
 .день::after{content:"";flex:1;height:1px;background:var(--line-soft)}
 
 /* задание */
@@ -89,18 +99,21 @@ button.карта{cursor:pointer}
 .дело .предмет{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .дело .что{font-size:14.5px;line-height:1.35;font-weight:500}
 .срок{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:3px 8px;border-radius:8px;
-  background:var(--surface-2);color:var(--muted);white-space:nowrap;flex:none;font-variant-numeric:tabular-nums;
+  background:var(--метка);color:var(--muted);white-space:nowrap;flex:none;font-variant-numeric:tabular-nums;
   border:1px solid transparent}
-.срок.горит{background:var(--amber-soft);color:var(--amber);border-color:var(--amber-line);font-weight:500}
+/* без обводки у всех плашек: была только у жёлтой — у красной и серой нет (решение 11.09) */
+.срок.горит{background:var(--amber-soft);color:var(--amber);font-weight:500}
 .срок.завтра{background:var(--red-soft);color:var(--red);font-weight:600}
 .низ{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px}
 .кнопка{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface-2);
   color:var(--ink);border-radius:9px;padding:6px 11px;font-size:12.5px;cursor:pointer;text-decoration:none}
-.кнопка.главная{background:var(--lime);border-color:var(--lime-deep);color:#131A20;font-weight:600}
+.кнопка.главная{background:var(--lime);border-color:var(--lime);color:#131A20;font-weight:600}
 
 
-.ещё{width:100%;border:1px dashed var(--line);background:none;color:var(--ink-2);border-radius:12px;
+.ещё{display:block;width:100%;border:1px dashed var(--line);background:none;color:var(--ink-2);border-radius:12px;
   padding:11px;font-size:13px;cursor:pointer;margin-top:2px}
+/* display:block — нижний отступ сливается с отступом следующего заголовка, как у карточки:
+   у кнопки (inline-block) они складывались — после «Показать прошедшие» разрыв был 30 px вместо 22 (11.09) */
 
 /* фильтры */
 .поиск{width:100%;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);
@@ -109,7 +122,7 @@ button.карта{cursor:pointer}
 .чипы::-webkit-scrollbar{display:none}
 .чип{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:20px;
   padding:6px 12px;font-size:12.5px;cursor:pointer;white-space:nowrap;flex:none}
-.чип[aria-pressed="true"]{background:var(--lime);border-color:var(--lime-deep);color:#131A20;font-weight:600}
+.чип[aria-pressed="true"]{background:var(--lime);border-color:var(--lime);color:#131A20;font-weight:600}
 .счёт{font-size:12px;color:var(--muted);margin:2px 0 10px;font-family:"IBM Plex Mono",monospace}
 .счёт.нашлось{font-size:13.5px;color:var(--ink);font-family:inherit;font-weight:600}
 .поле{position:relative}
@@ -129,8 +142,8 @@ button.карта{cursor:pointer}
 
 /* человек */
 .человек{display:flex;gap:11px;align-items:center}
-.аватар{width:40px;height:40px;border-radius:50%;background:var(--lime-soft);color:var(--ink);
-  display:grid;place-items:center;font-size:14px;font-weight:600;flex:none;border:1px solid var(--lime-line)}
+.аватар{width:40px;height:40px;border-radius:50%;background:var(--lime-tint);color:var(--ink);
+  display:grid;place-items:center;font-size:14px;font-weight:600;flex:none}
 .человек .имя{font-size:14px;line-height:1.25;font-weight:500}
 .раскрыто{margin-top:11px;padding-top:11px;border-top:1px solid var(--line-soft);display:grid;gap:8px}
 /* без этого display:grid перебивает [hidden] и карточки открыты всегда */
@@ -151,7 +164,7 @@ button.карта{cursor:pointer}
 .копируемая .значение{flex:1;min-width:0;text-align:right;overflow-wrap:anywhere;
   text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
 .строка b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-variant-numeric:tabular-nums}
-.роль{font-size:10px;background:var(--lime);color:#131A20;border-radius:5px;padding:1px 6px;margin-left:6px;font-weight:600}
+.роль{font-size:10px;background:var(--метка);color:var(--ink-2);border-radius:6px;padding:1px 6px;margin-left:6px;font-weight:600}
 .пусто{color:var(--muted);font-size:13.5px;padding:24px 0;text-align:center}
 
 /* экран отказа: занимает всю высоту, содержимое строго по центру.
@@ -159,8 +172,8 @@ button.карта{cursor:pointer}
 .экран.по-центру{display:flex;align-items:center;justify-content:center}
 .отказ{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;
   padding:0 4px;max-width:30ch}
-.отказ .знак{width:64px;height:64px;border-radius:50%;background:var(--lime-soft);
-  border:1px solid var(--lime-line);display:grid;place-items:center;margin-bottom:6px}
+.отказ .знак{width:64px;height:64px;border-radius:50%;background:var(--lime-tint);
+  display:grid;place-items:center;margin-bottom:6px}
 .отказ .знак svg{width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:1.6;
   stroke-linecap:round;stroke-linejoin:round}
 .отказ h2{font-size:21px;line-height:1.2}
@@ -178,7 +191,7 @@ button.карта{cursor:pointer}
   margin-bottom:8px;cursor:pointer;text-align:left;color:inherit;font-size:14px}
 .ряд .право{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;flex:none}
 .ряд .число{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;
-  background:var(--surface-2);border-radius:7px;padding:2px 8px;font-size:12.5px;color:var(--ink-2)}
+  background:var(--метка);border-radius:7px;padding:2px 8px;font-size:12.5px;color:var(--ink-2)}
 .ряд.нечего{opacity:.5;cursor:default}
 .плитки{display:grid;grid-template-columns:1fr;gap:8px}
 .плитка{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:10px;padding:13px;border:1px solid var(--line);border-radius:14px;
@@ -191,8 +204,8 @@ button.карта{cursor:pointer}
 /* экран загрузки: спокойное состояние вместо мигающих плашек */
 .загрузка{display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:14px;min-height:60vh;text-align:center}
-.пульс{width:72px;height:72px;border-radius:50%;background:var(--lime-soft);
-  border:1px solid var(--lime-line);display:grid;place-items:center;animation:дышит 1.8s ease-in-out infinite}
+.пульс{width:72px;height:72px;border-radius:50%;background:var(--lime-tint);
+  display:grid;place-items:center;animation:дышит 1.8s ease-in-out infinite}
 .пульс svg{width:30px;height:30px;stroke:var(--ink);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .подпись-загрузки{color:var(--muted);font-size:13.5px}
 @keyframes дышит{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.75}}
