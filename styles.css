@@ -139,6 +139,8 @@ button.карта{cursor:pointer}
 /* та же стрелка, что у пар, только смотрит вниз; при раскрытии — вверх */
 .ведёт.вниз{margin-left:auto;transform:rotate(90deg);transition:none}
 .карта.человек-карта.открыта .ведёт.вниз{transform:rotate(-90deg)}
+.карта.открыта .задание .ведёт.вниз{transform:rotate(-90deg)}
+.задание .строка .ведёт.вниз{margin-left:0;align-self:flex-start;margin-top:2px}
 .копируемая{cursor:pointer;flex-wrap:wrap}
 .копируемая .метка{flex:none}
 .копируемая .значение{flex:1;min-width:0;text-align:right;overflow-wrap:anywhere;
