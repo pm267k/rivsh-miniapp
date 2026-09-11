@@ -65,8 +65,7 @@ button.карта{cursor:pointer}
 .задание .строка .срок{flex:none;margin-top:1px}
 .задание .детали{display:grid;gap:9px}
 .задание .детали[hidden]{display:none}
-.прошедшие-ряд{width:100%;display:flex;justify-content:space-between;align-items:center;border:none;background:none;
-  color:var(--muted);font-size:13px;padding:8px 2px 14px;cursor:pointer}
+
 .вид{margin-top:5px}
 .бейдж{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:20px;
   background:var(--lime-soft);border:1px solid var(--lime-deep);color:var(--ink)}
