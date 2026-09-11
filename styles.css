@@ -97,6 +97,11 @@ button.карта{cursor:pointer}
   padding:6px 12px;font-size:12.5px;cursor:pointer;white-space:nowrap;flex:none}
 .чип[aria-pressed="true"]{background:var(--lime);border-color:var(--lime-deep);color:#131A20;font-weight:600}
 .счёт{font-size:12px;color:var(--muted);margin:2px 0 10px;font-family:"IBM Plex Mono",monospace}
+.счёт.нашлось{font-size:13.5px;color:var(--ink);font-family:inherit;font-weight:600}
+.поле{position:relative}
+.поле .поиск{padding-right:40px}
+.стереть{position:absolute;right:6px;top:5px;width:32px;height:32px;border:none;background:none;
+  color:var(--muted);font-size:18px;line-height:32px;cursor:pointer;border-radius:50%}
 
 /* книга */
 .книга .назв{font-size:14.5px;line-height:1.32;font-weight:500}
