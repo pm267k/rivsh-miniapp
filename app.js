@@ -409,8 +409,9 @@ function экранКниг(){
   var h=эл('div'); h.id='спискниг'; эк.appendChild(h);
   списокКниг();
 }
-/* В Telegram тап мимо поля клавиатуру не прячет — прячем сами */
-document.addEventListener('touchstart', function(e){
+/* В Telegram тап мимо поля клавиатуру не прячет — прячем сами. pointerdown, а не
+   touchstart: срабатывает и от пальца, и от мыши в Telegram на компьютере. */
+document.addEventListener('pointerdown', function(e){
   var а=document.activeElement;
   if(а && а.tagName==='INPUT' && e.target!==а && !(e.target.closest && e.target.closest('.поле'))) а.blur();
 }, {passive:true});
