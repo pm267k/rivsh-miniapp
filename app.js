@@ -9,6 +9,13 @@ function открыть(url){ if(!url) return; try{ ТГ.openLink(url); }catch(e
 /** В колонке Telegram у преподавателей встречается «@ник · канал «…»» — берём только ник.
     Иначе весь хвост уезжает в адрес и ссылка не открывается (поймано 10.09 на Галецком). */
 function чистыйНик(ник){ return String(ник||'').split('·')[0].trim().replace(/^@/,'').replace(/^https?:\/\/(t\.me|telegram\.me)\//,''); }
+/* Ника нет — открываем чат по номеру: t.me/+375… (решение владельца 12.09). У части группы
+   ника в Telegram просто нет. Откроется, если человек не закрыл поиск по номеру. */
+function тгПоНомеру(тел){
+  var ц=String(тел||'').replace(/\D/g,'');
+  if(/^80\d{9}$/.test(ц)) ц='375'+ц.slice(2);
+  return /^\d{11,13}$/.test(ц) ? 'https://t.me/+'+ц : '';
+}
 function написать(ник){ var u='https://t.me/'+чистыйНик(ник); try{ ТГ.openTelegramLink(u); }catch(e){ window.open(u,'_blank','noopener'); } }
 
 var эк=document.getElementById('экран'), Д=null;
@@ -770,9 +777,11 @@ function экранЛюдей(){
       if(ч.тел&&ч.тел.indexOf('•')<0) строкаКопии('телефон', ч.тел);
       if(ч.поч) строкаКопии('почта', ч.поч);
       var низ=эл('div','низ');
-      if(ч.тг){
+      var поНомеру=!ч.тг && ч.тел && ч.тел.indexOf('•')<0 ? тгПоНомеру(ч.тел) : '';
+      if(ч.тг||поНомеру){
         var b=эл('a','кнопка','<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M21.9 4.3 18.9 19c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.2.3-.5.5-1 .5l.3-4.7 8.5-7.7c.4-.3-.1-.5-.6-.2L6.2 13l-4.5-1.4c-1-.3-1-1 .2-1.5l17.6-6.8c.8-.3 1.5.2 1.2 1.4z"/></svg>Telegram');
-        b.onclick=function(e){ e.stopPropagation(); вибро(); написать(ч.тг); };
+        b.onclick=function(e){ e.stopPropagation(); вибро();
+          if(ч.тг) написать(ч.тг); else { try{ ТГ.openTelegramLink(поНомеру); }catch(err){ window.open(поНомеру,'_blank','noopener'); } } };
         низ.appendChild(b);
       }
       if(ч.инст){
