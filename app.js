@@ -388,20 +388,31 @@ function экранКниг(){
   х.onclick=function(){ вибро(); запрос=''; п.value=''; х.hidden=true; списокКниг(); п.focus(); };
   поле.appendChild(п); поле.appendChild(х); эк.appendChild(поле);
 
-  var ряд=эл('div','чипы');
-  ряд.appendChild(чип('★ к экзамену', фВажные, function(){фВажные=!фВажные; отрисовать();}));
+  /* Раздел и ★ переключают только список, ряд не перерисовывается: иначе прокрутка
+     ряда сбрасывалась влево, а нужный раздел мог быть далеко справа (поймано 11.09). */
+  var ряд=эл('div','чипы'); ряд.id='рядкниг';
+  var зв=чип('★ к экзамену', фВажные, function(){фВажные=!фВажные; отметитьЧипы(); списокКниг();});
+  зв.setAttribute('data-ф','★'); ряд.appendChild(зв);
   if(фКто) ряд.appendChild(чип(фКто.split(' ')[0]+' ✕', true, function(){фКто=''; отрисовать();}));
   // пришли с экрана предмета — предмет виден кнопкой с крестиком, а не висит невидимым
   if(фДис){ var пр=Д.книги.filter(function(к){return ключДис(к.д)===фДис;})[0];
     ряд.appendChild(чип((пр?имяКапса(пр.д):фДис)+' ✕', true, function(){фДис=''; отрисовать();})); }
   поПорядку(Д.книги,'б').forEach(function(б){
-    ряд.appendChild(чип(имяКапса(б), фРаздел===б, function(){фРаздел=(фРаздел===б?'':б); отрисовать();}));
+    var ч=чип(имяКапса(б), фРаздел===б, function(){фРаздел=(фРаздел===б?'':б); отметитьЧипы(); списокКниг();});
+    ч.setAttribute('data-ф',б); ряд.appendChild(ч);
   });
   эк.appendChild(ряд);
 
   эк.appendChild(эл('div','счёт','','')); эк.lastChild.id='счёткниг';
   var h=эл('div'); h.id='спискниг'; эк.appendChild(h);
   списокКниг();
+}
+function отметитьЧипы(){
+  var р=document.getElementById('рядкниг'); if(!р) return;
+  Array.prototype.forEach.call(р.querySelectorAll('[data-ф]'), function(x){
+    var ф=x.getAttribute('data-ф');
+    x.setAttribute('aria-pressed', (ф==='★'?фВажные:фРаздел===ф)?'true':'false');
+  });
 }
 function чип(текст,активен,действие){
   var b=эл('button','чип',экр(текст));
