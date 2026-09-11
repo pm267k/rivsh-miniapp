@@ -8,6 +8,8 @@ body{margin:0;background:var(--ground);color:var(--ink);
 .назв,.что,.дис,.имя,.авт,.мелко,h2{overflow-wrap:anywhere}
 h2{font-family:Unbounded,"Golos Text",sans-serif;font-weight:600;margin:0;text-wrap:balance}
 a{color:var(--link);text-decoration:none}
+/* тёмная вспышка при тапе — системная подсветка WebView; гасим везде, не только у кнопок (11.09) */
+html{-webkit-tap-highlight-color:transparent}
 button{font-family:inherit;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none}
 button,a{-webkit-touch-callout:none}
 :focus-visible{outline:2px solid var(--lime-deep);outline-offset:2px;border-radius:8px}
@@ -100,6 +102,9 @@ button.карта{cursor:pointer}
 .счёт.нашлось{font-size:13.5px;color:var(--ink);font-family:inherit;font-weight:600}
 .поле{position:relative}
 .поле .поиск{padding-right:40px}
+.поиск{-webkit-appearance:none;appearance:none;outline:none}
+.поиск:focus{border-color:var(--lime-deep)}
+.поиск::-webkit-search-cancel-button{-webkit-appearance:none}
 .стереть{position:absolute;right:6px;top:5px;width:32px;height:32px;border:none;background:none;
   color:var(--muted);font-size:18px;line-height:32px;cursor:pointer;border-radius:50%}
 
