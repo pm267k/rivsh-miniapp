@@ -111,6 +111,8 @@ button.карта{cursor:pointer}
 /* книга */
 .книга .назв{font-size:14.5px;line-height:1.32;font-weight:500}
 .книга .авт{font-size:12.5px;color:var(--muted);margin-top:3px}
+/* кнопки — на том же расстоянии от текста, что у карточки задания на «Сегодня» (gap 7 + 2) */
+.книга .низ{margin-top:9px}
 .звезда{color:var(--amber)}
 
 /* человек */
