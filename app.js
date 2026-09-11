@@ -197,7 +197,50 @@ var табы=document.getElementById('табы');
   };
   табы.appendChild(b);
 });
-function перейти(куда){ активная=куда; отрисовать(); }
+function перейти(куда){ активная=куда; отрисовать(); событие(куда,'экран',''); }
+
+/* ---------- статистика: что людям нужно ----------
+   Копим события в памяти и раз в 30 секунд (и при закрытии) отправляем пачкой на API.
+   Человек в событие не попадает — только номер сессии: решения принимаются по сумме,
+   а поимённая история нажатий превращает пульт группы в слежку (решение владельца 12.09).
+   Отправка «выстрелил и забыл»: упала — приложение этого даже не заметит. */
+var СЕССИЯ=Math.random().toString(36).slice(2,10), очередьСобытий=[];
+function событие(экран, действие, что){
+  try{ очередьСобытий.push({т:Date.now(), с:СЕССИЯ, э:экран||активная, д:действие||'', ч:(что||'').slice(0,120)}); }catch(e){}
+  if(очередьСобытий.length>=40) отправитьСобытия();
+}
+function отправитьСобытия(){
+  if(!очередьСобытий.length || АПИ.indexOf('http')!==0) return;
+  var пачка=очередьСобытий.splice(0, 300), тело=JSON.stringify(пачка);
+  var адрес=АПИ+'?ev=1&init='+encodeURIComponent((ТГ&&ТГ.initData)||'');
+  try{
+    if(navigator.sendBeacon && navigator.sendBeacon(адрес, new Blob([тело],{type:'text/plain'}))) return;
+    fetch(адрес,{method:'POST',body:тело,mode:'no-cors',keepalive:true});
+  }catch(e){}
+}
+setInterval(отправитьСобытия, 30000);
+document.addEventListener('visibilitychange', function(){ if(document.hidden) отправитьСобытия(); });
+window.addEventListener('pagehide', отправитьСобытия);
+
+/* Ловим нажатия одним слушателем на весь экран, а не в каждом обработчике:
+   так статистика не размазывается по коду и её видно целиком в одном месте. */
+document.addEventListener('click', function(e){
+  var т=e.target;
+  if(!т || !т.closest) return;
+  // первая строка карточки — часто время («9:00»), поэтому берём две: «9:00 · Социальная психология»
+  var подпись=function(у){ return (у.innerText||'').trim().split('\n')
+    .map(function(x){return x.trim();}).filter(Boolean).slice(0,2).join(' · ').slice(0,60); };
+  var чип=т.closest('.чип');
+  if(чип){ событие('','фильтр',подпись(чип)); return; }
+  var кн=т.closest('[data-сс],[data-куп]');
+  if(кн){ событие('','ссылка',подпись(кн)); return; }
+  var кнопка=т.closest('.кнопка,.назад,.ещё');
+  if(кнопка){ событие('','кнопка',подпись(кнопка)); return; }
+  var плитка=т.closest('.плитка');
+  if(плитка){ событие('','предмет',подпись(плитка)); return; }
+  var карта=т.closest('.карта,.строка-дня');
+  if(карта){ событие('','карточка',подпись(карта)); return; }
+}, true);
 function отрисовать(){
   for(var i=0;i<табы.children.length;i++) табы.children[i].setAttribute('aria-selected',ВКЛАДКИ[i].id===активная);
   if(!Д) return;
@@ -475,7 +518,11 @@ function экранКниг(){
   var п=эл('input','поиск'); п.type='search'; п.placeholder='Автор или название'; п.value=запрос;
   п.setAttribute('enterkeyhint','search');
   var х=эл('button','стереть','✕'); х.setAttribute('aria-label','Очистить'); х.hidden=!запрос;
-  п.oninput=function(e){запрос=e.target.value; х.hidden=!запрос; списокКниг();};
+  var таймерПоиска=null;
+  п.oninput=function(e){запрос=e.target.value; х.hidden=!запрос; списокКниг();
+    clearTimeout(таймерПоиска);
+    таймерПоиска=setTimeout(function(){ if(запрос.trim().length>1) событие('книги','поиск',запрос.trim()); },1500);
+  };
   /* Enter на телефоне ничего не делал: клавиатура оставалась открытой и закрывала
      список (поймано 10.09). Теперь Enter прячет клавиатуру. Без прокрутки к результатам:
      она уводила поле поиска за верх экрана — скачок (11.09). */
