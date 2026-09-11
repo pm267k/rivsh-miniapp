@@ -40,7 +40,7 @@ button,a{-webkit-touch-callout:none}
   padding:12px 13px;margin-bottom:8px;display:block;width:100%;text-align:left;color:inherit;
   -webkit-tap-highlight-color:transparent}
 button.карта{cursor:pointer}
-.карта.акцент{border-color:var(--lime-deep);background:var(--lime-soft)}
+.карта.акцент{border-color:var(--lime-line);background:var(--lime-soft)}
 .карта.тихо{opacity:.55}
 
 .пара{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:start}
@@ -72,7 +72,7 @@ button.карта{cursor:pointer}
 
 .вид{margin-top:5px}
 .бейдж{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:20px;
-  background:var(--lime-soft);border:1px solid var(--lime-deep);color:var(--ink)}
+  background:var(--lime-soft);border:1px solid var(--lime-line);color:var(--ink)}
 
 /* день в расписании */
 .день{display:flex;align-items:center;gap:10px;margin:18px 0 8px}
@@ -130,7 +130,7 @@ button.карта{cursor:pointer}
 /* человек */
 .человек{display:flex;gap:11px;align-items:center}
 .аватар{width:40px;height:40px;border-radius:50%;background:var(--lime-soft);color:var(--ink);
-  display:grid;place-items:center;font-size:14px;font-weight:600;flex:none;border:1px solid var(--lime-deep)}
+  display:grid;place-items:center;font-size:14px;font-weight:600;flex:none;border:1px solid var(--lime-line)}
 .человек .имя{font-size:14px;line-height:1.25;font-weight:500}
 .раскрыто{margin-top:11px;padding-top:11px;border-top:1px solid var(--line-soft);display:grid;gap:8px}
 /* без этого display:grid перебивает [hidden] и карточки открыты всегда */
@@ -160,7 +160,7 @@ button.карта{cursor:pointer}
 .отказ{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;
   padding:0 4px;max-width:30ch}
 .отказ .знак{width:64px;height:64px;border-radius:50%;background:var(--lime-soft);
-  border:1px solid var(--lime-deep);display:grid;place-items:center;margin-bottom:6px}
+  border:1px solid var(--lime-line);display:grid;place-items:center;margin-bottom:6px}
 .отказ .знак svg{width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:1.6;
   stroke-linecap:round;stroke-linejoin:round}
 .отказ h2{font-size:21px;line-height:1.2}
@@ -192,7 +192,7 @@ button.карта{cursor:pointer}
 .загрузка{display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:14px;min-height:60vh;text-align:center}
 .пульс{width:72px;height:72px;border-radius:50%;background:var(--lime-soft);
-  border:1px solid var(--lime-deep);display:grid;place-items:center;animation:дышит 1.8s ease-in-out infinite}
+  border:1px solid var(--lime-line);display:grid;place-items:center;animation:дышит 1.8s ease-in-out infinite}
 .пульс svg{width:30px;height:30px;stroke:var(--ink);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .подпись-загрузки{color:var(--muted);font-size:13.5px}
 @keyframes дышит{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.75}}
