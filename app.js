@@ -385,7 +385,9 @@ function экранКниг(){
      клавиатуру и подводит к результатам. */
   п.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); п.blur();
     var сч=document.getElementById('счёткниг'); if(сч) сч.scrollIntoView({block:'start'}); } };
-  х.onclick=function(){ вибро(); запрос=''; п.value=''; х.hidden=true; списокКниг(); п.focus(); };
+  /* Крестик раньше возвращал курсор в поле — клавиатура всплывала снова, и из поиска
+     было не выйти (поймано 11.09). Теперь очищает и убирает клавиатуру. */
+  х.onclick=function(){ вибро(); запрос=''; п.value=''; х.hidden=true; п.blur(); списокКниг(); };
   поле.appendChild(п); поле.appendChild(х); эк.appendChild(поле);
 
   /* Раздел и ★ переключают только список, ряд не перерисовывается: иначе прокрутка
@@ -407,6 +409,11 @@ function экранКниг(){
   var h=эл('div'); h.id='спискниг'; эк.appendChild(h);
   списокКниг();
 }
+/* В Telegram тап мимо поля клавиатуру не прячет — прячем сами */
+document.addEventListener('touchstart', function(e){
+  var а=document.activeElement;
+  if(а && а.tagName==='INPUT' && e.target!==а && !(e.target.closest && e.target.closest('.поле'))) а.blur();
+}, {passive:true});
 function отметитьЧипы(){
   var р=document.getElementById('рядкниг'); if(!р) return;
   Array.prototype.forEach.call(р.querySelectorAll('[data-ф]'), function(x){
