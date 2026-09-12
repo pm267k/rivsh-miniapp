@@ -54,6 +54,7 @@ button.карта{cursor:pointer}
 .мелко{font-size:12.5px;color:var(--muted);margin-top:3px}
 /* Комментарии к заданиям приходят из таблицы многострочными — переносы держим. */
 .мелко.текст{white-space:pre-line}
+.мелко.текст a{text-decoration:underline}
 /* Сворачивание описаний: без transition — в WebView Telegram анимация высоты давала вспышку. */
 .мелко.текст.свёрнут{max-height:3.4em;overflow:hidden;position:relative}
 .мелко.текст.свёрнут::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1.5em;
