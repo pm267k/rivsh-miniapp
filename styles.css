@@ -107,6 +107,11 @@ button.карта{cursor:pointer}
 .срок.горит{background:var(--amber-soft);color:var(--amber);border-color:var(--amber-line);font-weight:500}
 .срок.завтра{background:var(--red-soft);color:var(--red);border-color:var(--red-line);font-weight:600}
 .низ{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px}
+/* В развёрнутой карточке ряд кнопок отбивается от описания заметнее, чем от нижнего
+   края: иначе текст и кнопка читаются как один блок (правка по замечанию владельца 12.09).
+   Сетка даёт 9px (детали) и 7px (дело), нижний край карточки — 12px, поэтому добавляем. */
+.задание .детали .низ{margin-top:7px}
+.дело .низ{margin-top:8px}
 .кнопка{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface-2);
   color:var(--ink);border-radius:9px;padding:6px 11px;font-size:12.5px;cursor:pointer;text-decoration:none}
 .кнопка.главная{background:var(--lime);border-color:var(--lime-deep);color:#131A20;font-weight:600}
