@@ -893,6 +893,13 @@ function экранЛюдей(){
           открыть('https://instagram.com/'+String(ч.инст).split('·')[0].trim().replace('@','').replace(/^https?:\/\/(www\.)?instagram\.com\//,''));};
         низ.appendChild(g);
       }
+      // Сайт преподавателя — колонка H «Сайт» в «Контактах» (19.09, первым — Авзалов).
+      if(ч.сайт){
+        var w=эл('a','кнопка','<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>Сайт');
+        w.onclick=function(e){ e.stopPropagation(); вибро();
+          var адрес=String(ч.сайт).trim(); открыть(/^https?:\/\//.test(адрес)?адрес:'https://'+адрес); };
+        низ.appendChild(w);
+      }
       if(низ.children.length) д.appendChild(низ);
       c.appendChild(д);
       if(раскрытые[ключ]) c.classList.add('открыта');
